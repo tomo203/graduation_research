@@ -29,3 +29,6 @@ class tb6643kq_driver:
 
         self.pi.set_PWM_dutycycle(follow_pin, self.RANGE)
         self.pi.set_PWM_dutycycle(back_pin, self.RANGE - speed)
+
+    def stop(self):
+        pass
