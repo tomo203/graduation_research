@@ -1,5 +1,5 @@
-import tb6643kq_driver as a
+import tb6643kq_driver as driver
 
-driver = a.tb6643kq_driver(1)
+driver = driver.tb6643kq_driver(5, 6)
 
-a.drive()
+driver.drive(50)

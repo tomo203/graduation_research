@@ -1,4 +1,4 @@
-from turtle import back
+import time
 import pigpio
 
 
@@ -30,9 +30,12 @@ class tb6643kq_driver:
         self.pi.set_PWM_dutycycle(follow_pin, self.RANGE)
         self.pi.set_PWM_dutycycle(back_pin, self.RANGE - speed)
 
+    def accelatation(self, start, end, time):
+        at = (end - start) / time
+
+        for i in range(start, end, at):
+            self.drive(i)
+
     def stop(self):
         self.pi.set_PWM_dutycycle(self.PIN_1, self.RANGE)
         self.pi.set_PWM_dutycycle(self.PIN_2, self.RANGE)
-
-    def acceleration(self, start, end, time):
-        pass
