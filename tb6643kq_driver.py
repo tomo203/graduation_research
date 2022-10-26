@@ -35,8 +35,8 @@ class tb6643kq_driver:
 
         for i in range(start, end, at):
             self.drive(i)
+            time.sleep(1)
 
     def stop(self):
         self.pi.set_PWM_dutycycle(self.PIN_1, self.RANGE)
         self.pi.set_PWM_dutycycle(self.PIN_2, self.RANGE)
-        time.sleep(1)
