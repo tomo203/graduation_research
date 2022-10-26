@@ -27,5 +27,5 @@ class tb6643kq_driver:
             back_pin = self.PIN_1
             speed = -speed
 
-        self.pi.set_PWM_dutycycle(follow_pin, 100)
+        self.pi.set_PWM_dutycycle(follow_pin, self.RANGE)
         self.pi.set_PWM_dutycycle(back_pin, self.RANGE - speed)
