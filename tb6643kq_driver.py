@@ -18,7 +18,7 @@ class Tb6643kq_driver:
         self.pi.set_mode(self.PIN_1, pigpio.OUTPUT)
         self.pi.set_mode(self.PIN_2, pigpio.OUTPUT)
 
-    def drive(self, speed):
+    def drive(self, speed: int) -> None:
         follow_pin = self.PIN_1
         back_pin = self.PIN_2
 
@@ -30,13 +30,13 @@ class Tb6643kq_driver:
         self.pi.set_PWM_dutycycle(follow_pin, self.RANGE)
         self.pi.set_PWM_dutycycle(back_pin, self.RANGE - speed)
 
-    def accelatation(self, start, end, time):
+    def accelatation(self, start: int, end: int, time: int) -> None:
         at = (end - start) / time
 
         for i in range(start, end, at):
             self.drive(i)
             time.sleep(1)
 
-    def stop(self):
+    def stop(self) -> None:
         self.pi.set_PWM_dutycycle(self.PIN_1, self.RANGE)
         self.pi.set_PWM_dutycycle(self.PIN_2, self.RANGE)
