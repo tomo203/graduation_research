@@ -2,7 +2,7 @@ import time
 import pigpio
 
 
-class tb6643kq_driver:
+class Tb6643kq_driver:
     def __init__(self, pin_1, pin_2, pi="192.168.10.21", freq=1000, range=100) -> None:
         self.PIN_1 = pin_1
         self.PIN_2 = pin_2
