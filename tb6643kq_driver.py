@@ -30,8 +30,8 @@ class Tb6643kq_driver:
         self.pi.set_PWM_dutycycle(follow_pin, self.RANGE)
         self.pi.set_PWM_dutycycle(back_pin, self.RANGE - speed)
 
-    def accelatation(self, start: int, end: int, time: int) -> None:
-        at = (end - start) / time
+    def accelatation(self, start: int, end: int, at_time: int) -> None:
+        at = (end - start) / at_time
 
         for i in range(start, end, at):
             self.drive(i)
