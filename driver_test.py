@@ -1,5 +1,8 @@
+import pigpio
 import tb6643kq_driver as driver
 
-driver = driver.Tb6643kq_driver(5, 6)
+pi = pigpio.pi("192.168.11.36")
 
-driver.drive(50)
+driver = driver.Tb6643kq_driver(pi, 5, 6)
+
+driver.drive(100)

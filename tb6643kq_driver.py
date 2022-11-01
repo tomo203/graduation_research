@@ -3,12 +3,12 @@ import pigpio
 
 
 class Tb6643kq_driver:
-    def __init__(self, pin_1: int, pin_2: int, pi="192.168.10.21", freq=1000, range=100) -> None:
+    def __init__(self, pi: pigpio.pi, pin_1: int, pin_2: int, freq=1000, range=100) -> None:
         self.PIN_1 = pin_1
         self.PIN_2 = pin_2
         self.RANGE = range
 
-        self.pi = pigpio.pi(pi)
+        self.pi = pi
 
         self.pi.set_PWM_frequency(self.PIN_1, freq)
         self.pi.set_PWM_frequency(self.PIN_2, freq)
