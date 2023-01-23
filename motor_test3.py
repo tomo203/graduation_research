@@ -9,7 +9,9 @@ IN_A_2 = 6
 IN_B_1 = 22
 IN_B_2 = 27
 
-pi = pigpio.pi('192.168.10.21')
+t = 5
+
+pi = pigpio.pi('192.168.137.125')
 
 pi.set_mode(IN_A_1, pigpio.OUTPUT)
 pi.set_mode(IN_A_2, pigpio.OUTPUT)
@@ -37,17 +39,17 @@ pi.set_PWM_dutycycle(IN_B_2, 0)
 pi.set_PWM_dutycycle(IN_A_1, 100)
 
 pi.set_PWM_dutycycle(IN_A_2, 100)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_2, 80)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_2, 60)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_2, 40)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_2, 20)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_2, 0)
-time.sleep(1)
+time.sleep(t)
 
 pi.set_PWM_dutycycle(IN_A_1, 100)
 pi.set_PWM_dutycycle(IN_A_2, 100)
@@ -55,17 +57,17 @@ pi.set_PWM_dutycycle(IN_A_2, 100)
 pi.set_PWM_dutycycle(IN_A_2, 100)
 
 pi.set_PWM_dutycycle(IN_A_1, 100)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_1, 80)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_1, 60)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_1, 40)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_1, 20)
-time.sleep(1)
+time.sleep(t)
 pi.set_PWM_dutycycle(IN_A_1, 0)
-time.sleep(1)
+time.sleep(t)
 
 pi.set_PWM_dutycycle(IN_A_1, 100)
 pi.set_PWM_dutycycle(IN_A_2, 100)

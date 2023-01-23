@@ -1,4 +1,5 @@
 import cv2
+import pigpio
 
 
 def draw_box(img, bbox):

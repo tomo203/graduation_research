@@ -14,6 +14,7 @@ class Tb6643kq_driver:
         self.pi.set_PWM_frequency(self.PIN_2, freq)
 
         self.pi.set_PWM_range(self.PIN_1, range)
+        self.pi.set_PWM_range(self.PIN_2, range)
 
         self.pi.set_mode(self.PIN_1, pigpio.OUTPUT)
         self.pi.set_mode(self.PIN_2, pigpio.OUTPUT)
