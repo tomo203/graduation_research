@@ -1,5 +1,6 @@
 import cv2
 import pigpio
+import tb6643kq_driver as driver
 
 
 def draw_box(img, bbox):
@@ -7,11 +8,27 @@ def draw_box(img, bbox):
     cv2.rectangle(img, (x, y), ((x + w), (y + h)), (255, 0, 0), 3, 1)
     cv2.putText(img, F'Tracking {x}', (15, 70), font, 0.5, (0, 0, 255), 2)
 
+    height, width,  = img.shape[:2]
+    if x + w / 2 < (width / 2) - 50:
+        return "left"
+    elif x + w / 2 > (width / 2) + 50:
+        return "right"
+    else:
+        return "mid"
+
 
 if __name__ == '__main__':
 
+    pi = pigpio.pi("192.168.10.109")
+
+    driverL = driver.Tb6643kq_driver(pi, 5, 6)
+    driverR = driver.Tb6643kq_driver(pi, 22, 27)
+
+    driverL.drive(0)
+    driverR.drive(0)
+
     # mjpg-streamerを動作させているPC・ポートを入力
-    URL = "http://192.168.137.125:8080/?action=stream"
+    URL = "http://192.168.10.109:8080/?action=stream"
     cap = cv2.VideoCapture(URL)
 
     # Create tracker
@@ -38,7 +55,20 @@ if __name__ == '__main__':
 
         success, bbox = tracker.update(img)
         if success:
-            draw_box(img, bbox)
+            x = draw_box(img, bbox)
+            cv2.putText(img, x, (150, 150),
+                        font, 0.5, (0, 0, 255), 2)
+
+            if x == "left":
+                driverL.drive(60)
+                driverR.drive(-60)
+            elif x == "right":
+                driverL.drive(-60)
+                driverR.drive(60)
+            else:
+                driverL.stop()
+                driverR.stop()
+
         else:
             cv2.putText(img, 'Tracking Lost', (15, 70),
                         font, 0.5, (0, 0, 255), 2)
@@ -47,6 +77,8 @@ if __name__ == '__main__':
 
         key = cv2.waitKey(1)
         if key == 27:  # Esc入力時は終了
+            driverL.drive(0)
+            driverR.drive(0)
             break
 
     # 終了処理

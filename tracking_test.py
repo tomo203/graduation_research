@@ -6,11 +6,19 @@ def draw_box(img, bbox):
     cv2.rectangle(img, (x, y), ((x + w), (y + h)), (255, 0, 0), 3, 1)
     cv2.putText(img, F'Tracking {x}', (15, 70), font, 0.5, (0, 0, 255), 2)
 
+    height, width,  = img.shape[:2]
+    if x + w / 2 < (width / 2) - 50:
+        return "left"
+    elif x + w / 2 > (width / 2) + 50:
+        return "right"
+    else:
+        return "mid"
+
 
 if __name__ == '__main__':
 
     # mjpg-streamerを動作させているPC・ポートを入力
-    URL = "http://192.168.137.125:8080/?action=stream"
+    URL = "http://192.168.10.109:8080/?action=stream"
     cap = cv2.VideoCapture(URL)
 
     # Create tracker
@@ -37,7 +45,9 @@ if __name__ == '__main__':
 
         success, bbox = tracker.update(img)
         if success:
-            draw_box(img, bbox)
+            x = draw_box(img, bbox)
+            cv2.putText(img, x, (150, 150),
+                        font, 0.5, (0, 0, 255), 2)
         else:
             cv2.putText(img, 'Tracking Lost', (15, 70),
                         font, 0.5, (0, 0, 255), 2)
