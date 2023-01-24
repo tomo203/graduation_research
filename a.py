@@ -6,15 +6,19 @@ import tb6643kq_driver as driver
 def draw_box(img, bbox):
     x, y, w, h = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
     cv2.rectangle(img, (x, y), ((x + w), (y + h)), (255, 0, 0), 3, 1)
-    cv2.putText(img, F'Tracking {x}', (15, 70), font, 0.5, (0, 0, 255), 2)
 
     height, width,  = img.shape[:2]
     if x + w / 2 < (width / 2) - 50:
-        return "left"
+        str = "left"
     elif x + w / 2 > (width / 2) + 50:
-        return "right"
+        str = "right"
     else:
-        return "mid"
+        str = "mid"
+
+    cv2.putText(img, F'Tracking {x} {str}',
+                (15, 70), font, 0.5, (0, 0, 255), 2)
+
+    return str
 
 
 if __name__ == '__main__':
@@ -24,8 +28,8 @@ if __name__ == '__main__':
     driverL = driver.Tb6643kq_driver(pi, 5, 6)
     driverR = driver.Tb6643kq_driver(pi, 22, 27)
 
-    driverL.drive(0)
-    driverR.drive(0)
+    driverL.stop()
+    driverR.stop()
 
     # mjpg-streamerを動作させているPC・ポートを入力
     URL = "http://192.168.10.109:8080/?action=stream"
@@ -56,8 +60,6 @@ if __name__ == '__main__':
         success, bbox = tracker.update(img)
         if success:
             x = draw_box(img, bbox)
-            cv2.putText(img, x, (150, 150),
-                        font, 0.5, (0, 0, 255), 2)
 
             if x == "left":
                 driverL.drive(60)
@@ -77,8 +79,8 @@ if __name__ == '__main__':
 
         key = cv2.waitKey(1)
         if key == 27:  # Esc入力時は終了
-            driverL.drive(0)
-            driverR.drive(0)
+            driverL.stop()
+            driverR.stop()
             break
 
     # 終了処理
