@@ -18,7 +18,7 @@ def draw_box(img, bbox):
     cv2.putText(img, F'Tracking {x} {str}',
                 (15, 70), font, 0.5, (0, 0, 255), 2)
 
-    return str
+    return (width / 2) - (x + w / 2)
 
 
 if __name__ == '__main__':
@@ -60,6 +60,9 @@ if __name__ == '__main__':
         success, bbox = tracker.update(img)
         if success:
             x = draw_box(img, bbox)
+
+            cv2.putText(img, F'Tracking {x}',
+                        (100, 70), font, 0.5, (0, 0, 255), 2)
 
             if x == "left":
                 driverL.drive(60)
