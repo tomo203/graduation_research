@@ -77,11 +77,11 @@ if __name__ == '__main__':
             turn_speed = range_chahger(x, width_low, width_high, -100, 100)
 
             if x == "left":
-                driverL.drive(60)
-                driverR.drive(-60)
+                driverL.drive(turn_speed)
+                driverR.drive(-1 * turn_speed)
             elif x == "right":
-                driverL.drive(-60)
-                driverR.drive(60)
+                driverL.drive(-1 * turn_speed)
+                driverR.drive(turn_speed)
             else:
                 driverL.stop()
                 driverR.stop()
