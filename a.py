@@ -3,11 +3,18 @@ import pigpio
 import tb6643kq_driver as driver
 
 
+def range_chahger(in_num: float, in_low: float, in_high: float, out_low: float, out_high: float) -> float:
+    out_num = ((in_num - in_low) / (in_high - in_low)) * \
+        (out_high - out_low) + out_low
+
+    return out_num
+
+
 def draw_box(img, bbox):
     x, y, w, h = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
     cv2.rectangle(img, (x, y), ((x + w), (y + h)), (255, 0, 0), 3, 1)
 
-    height, width,  = img.shape[:2]
+    width, = img.shape[2]
     if x + w / 2 < (width / 2) - 50:
         str = "left"
     elif x + w / 2 > (width / 2) + 50:
@@ -63,6 +70,11 @@ if __name__ == '__main__':
 
             cv2.putText(img, F'Tracking {x}',
                         (100, 70), font, 0.5, (0, 0, 255), 2)
+
+            width_high = img.shape[2] / 2
+            width_low = -1 * width_high
+
+            turn_speed = range_chahger(x, width_low, width_high, -100, 100)
 
             if x == "left":
                 driverL.drive(60)
