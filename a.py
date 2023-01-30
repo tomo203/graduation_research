@@ -1,6 +1,7 @@
 import cv2
 import pigpio
-import tb6643kq_driver as driver
+import tb6643kq_driver as motordriver
+import hcsr04_driver as sencor
 
 
 def range_chahger(in_num: float, in_low: float, in_high: float, out_low: float, out_high: float) -> float:
@@ -32,8 +33,9 @@ if __name__ == '__main__':
 
     pi = pigpio.pi("192.168.10.109")
 
-    driverL = driver.Tb6643kq_driver(pi, 5, 6)
-    driverR = driver.Tb6643kq_driver(pi, 22, 27)
+    driverL = motordriver.Tb6643kq_driver(pi, 5, 6)
+    driverR = motordriver.Tb6643kq_driver(pi, 22, 27)
+    distance_sencor = sencor.hcsr04_driver(pi, 23, 24)
 
     driverL.stop()
     driverR.stop()
