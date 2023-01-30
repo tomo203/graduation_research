@@ -12,7 +12,7 @@ class hcsr04_driver:
         self.pi.set_mode(self.ECHO, pigpio.INPUT)
         self.pi.write(self.TRIG, pigpio.LOW)
 
-    def read_distance(self):
+    def get_distance(self):
         # self.pi.write(self.TRIG, pigpio.HIGH)
         # time.sleep(0.00001)
         # self.pi.write(self.TRIG, pigpio.LOW)
