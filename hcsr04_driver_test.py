@@ -10,13 +10,13 @@ pi.write(23, pigpio.LOW)
 
 
 def get_distance():
+    sig_on = 0
+    sig_off = 0
+
     # pi.gpio_trigger(23, 10, pigpio.HIGH)
     pi.write(23, pigpio.HIGH)
     time.sleep(0.00001)
     pi.write(23, pigpio.LOW)
-
-    sig_on = 0
-    sig_off = 0
 
     while pi.read(24) == pigpio.LOW:
 
