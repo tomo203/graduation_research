@@ -18,11 +18,12 @@ def draw_box(img, bbox):
 if __name__ == '__main__':
 
     # mjpg-streamerを動作させているPC・ポートを入力
-    URL = "http://192.168.10.109:8080/?action=stream"
+    URL = "http://192.168.137.125:8080/?action=stream"
     cap = cv2.VideoCapture(URL)
 
     # Create tracker
-    tracker = cv2.TrackerKCF_create()
+    tracker = cv2.TrackerCSRT_create()
+    # tracker = cv2.TrackerKCF_create()
 
     while True:
         ret, img = cap.read()

@@ -15,6 +15,9 @@ class hcsr04_driver:
     def get_distance(self):
         self.pi.gpio_trigger(self.TRIG, 10, pigpio.HIGH)
 
+        sig_on = 0
+        sig_off = 0
+
         while self.pi.read(self.ECHO) == pigpio.LOW:
             sig_off = time.time()
         while self.pi.read(self.ECHO) == pigpio.HIGH:
