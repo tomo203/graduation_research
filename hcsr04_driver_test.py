@@ -22,9 +22,9 @@ def get_distance():
 
         print("b")
 
-        sig_off = time.time()
-    while pi.read(24) == pigpio.HIGH:
         sig_on = time.time()
+    while pi.read(24) == pigpio.HIGH:
+        sig_off = time.time()
 
     duration = sig_off - sig_on
     distance = duration * 34000 / 2
