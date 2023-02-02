@@ -1,6 +1,8 @@
 import time
 import pigpio
 
+# https://qiita.com/yoroyasu/items/8fb806199f629aa9d277
+
 
 class hcsr04_driver:
     def __init__(self, pi: pigpio.pi, trig: int, echo: int) -> None:
