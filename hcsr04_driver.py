@@ -12,19 +12,26 @@ class hcsr04_driver:
 
         self.pi.set_mode(self.TRIG, pigpio.OUTPUT)
         self.pi.set_mode(self.ECHO, pigpio.INPUT)
-        self.pi.write(self.TRIG, pigpio.LOW)
+
+    def cbf(gpio, level, tick):  # call back function for pulse detect _/~~\__
+        t_rise = 0
+        t_fall = 0
+
+        if (level == 1):  # right after the rising edge
+            t_rise = tick
+        else:            # right after the falling edge
+            t_fall = tick
+            if (t_fall >= t_rise):  # if wrapped 32bit value,
+                timepassed = t_fall - t_rise
+            else:
+                timepassed = t_fall + (0xffffffff + 1 - t_rise)
+
+            # meter to cm, microseconds to seconds, divide by 2
+            d = 340 * 100 * timepassed / 1000000 / 2
+            # print('{"tick":%10d, "time_us": %6d, "distance_cm": %.2f}' % (
+            #     tick, timepassed, d))
+
+            return d
 
     def get_distance(self):
-        self.pi.gpio_trigger(self.TRIG, 10, pigpio.HIGH)
-
-        sig_on = 0
-        sig_off = 0
-
-        while self.pi.read(self.ECHO) == pigpio.LOW:
-            sig_off = time.time()
-        while self.pi.read(self.ECHO) == pigpio.HIGH:
-            sig_on = time.time()
-
-        duration = sig_off - sig_on
-        distance = duration * 34000 / 2
-        return distance
+        cb = self.pi.callback(self.ECHO, pigpio.EITHER_EDGE, cbf)

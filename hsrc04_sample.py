@@ -6,7 +6,7 @@ import time
 HC_SR04_trig = 23
 HC_SR04_echo = 24
 
-pi = pigpio.pi()
+pi = pigpio.pi("192.168.137.125")
 pi.set_mode(HC_SR04_trig, pigpio.OUTPUT)
 pi.set_mode(HC_SR04_echo, pigpio.INPUT)
 
@@ -33,7 +33,10 @@ def cbf(gpio, level, tick):  # call back function for pulse detect _/~~\__
 
 
 cb = pi.callback(HC_SR04_echo, pigpio.EITHER_EDGE, cbf)
-pi.gpio_trigger(HC_SR04_trig, 10, 1)  # Trig (10μs pulse)
-time.sleep(0.1)  # wait for echo signal for 100msec (enough..., I believe...)
+while True:
+    pi.gpio_trigger(HC_SR04_trig, 10, 1)  # Trig (10μs pulse)
+    # wait for echo signal for 100msec (enough..., I believe...)
+    time.sleep(0.1)
+    time.sleep(1)
 
 pi.stop()
