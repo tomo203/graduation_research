@@ -13,7 +13,7 @@ class hcsr04_driver:
         self.pi.set_mode(self.TRIG, pigpio.OUTPUT)
         self.pi.set_mode(self.ECHO, pigpio.INPUT)
 
-    def cbf(gpio, level, tick):  # call back function for pulse detect _/~~\__
+    def cbf(self, gpio, level, tick):  # call back function for pulse detect _/~~\__
         t_rise = 0
         t_fall = 0
 
@@ -28,10 +28,8 @@ class hcsr04_driver:
 
             # meter to cm, microseconds to seconds, divide by 2
             d = 340 * 100 * timepassed / 1000000 / 2
-            # print('{"tick":%10d, "time_us": %6d, "distance_cm": %.2f}' % (
-            #     tick, timepassed, d))
 
             return d
 
     def get_distance(self):
-        cb = self.pi.callback(self.ECHO, pigpio.EITHER_EDGE, cbf)
+        cb = self.pi.callback(self.ECHO, pigpio.EITHER_EDGE, self.cbf)
