@@ -1,4 +1,5 @@
 import cv2
+import time
 import pigpio
 import tb6643kq_driver as motordriver
 import hcsr04_driver as sensor
@@ -15,7 +16,7 @@ def draw_box(img, bbox):
     x, y, w, h = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
     cv2.rectangle(img, (x, y), ((x + w), (y + h)), (255, 0, 0), 3, 1)
 
-    width = img.shape[2]
+    width = img.shape[1]
     if x + w / 2 < (width / 2) - 50:
         str = "left"
     elif x + w / 2 > (width / 2) + 50:
@@ -26,7 +27,7 @@ def draw_box(img, bbox):
     cv2.putText(img, F'Tracking {x} {str}',
                 (15, 70), font, 0.5, (0, 0, 255), 2)
 
-    return (width / 2) - (x + w / 2)
+    return (x + w / 2)
 
 
 if __name__ == '__main__':
@@ -71,29 +72,36 @@ if __name__ == '__main__':
         if success:
             x = draw_box(img, bbox)
 
-            cv2.putText(img, F'Tracking {x}',
+            width_high = img.shape[1]
+            width_low = 0
+
+            turn_speed = range_chahger(x, width_low, width_high, -80, 80)
+
+            cv2.putText(img, F'{turn_speed}',
                         (200, 70), font, 0.5, (0, 0, 255), 2)
 
-            width_high = img.shape[2] / 2
-            width_low = -1 * width_high
-
-            turn_speed = range_chahger(x, width_low, width_high, -100, 100)
-
-            if x == "left":
+            if turn_speed > 5:
                 driverL.drive(turn_speed)
-                driverR.drive(-1 * turn_speed)
-            elif x == "right":
-                driverL.drive(-1 * turn_speed)
-                driverR.drive(turn_speed)
+                driverR.drive(-turn_speed)
+            elif turn_speed < -5:
+                driverL.drive(turn_speed)
+                driverR.drive(-turn_speed)
             else:
                 driverL.stop()
                 driverR.stop()
+
+            time.sleep(0.01)
+
+            driverL.stop()
+            driverR.stop()
 
         else:
             cv2.putText(img, 'Tracking Lost', (15, 70),
                         font, 0.5, (0, 0, 255), 2)
 
         cv2.imshow("Tracking", img)
+
+        time.sleep(0.02)
 
         key = cv2.waitKey(1)
         if key == 27:  # Esc入力時は終了
