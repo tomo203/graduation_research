@@ -15,7 +15,7 @@ def draw_box(img, bbox):
     x, y, w, h = int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3])
     cv2.rectangle(img, (x, y), ((x + w), (y + h)), (255, 0, 0), 3, 1)
 
-    width, = img.shape[2]
+    width = img.shape[2]
     if x + w / 2 < (width / 2) - 50:
         str = "left"
     elif x + w / 2 > (width / 2) + 50:
@@ -31,7 +31,7 @@ def draw_box(img, bbox):
 
 if __name__ == '__main__':
 
-    pi = pigpio.pi("192.168.10.109")
+    pi = pigpio.pi("192.168.137.125")
 
     driverL = motordriver.Tb6643kq_driver(pi, 5, 6)
     driverR = motordriver.Tb6643kq_driver(pi, 22, 27)
@@ -41,7 +41,7 @@ if __name__ == '__main__':
     driverR.stop()
 
     # mjpg-streamerを動作させているPC・ポートを入力
-    URL = "http://192.168.10.109:8080/?action=stream"
+    URL = "http://192.168.137.125:8080/?action=stream"
     cap = cv2.VideoCapture(URL)
 
     # Create tracker
@@ -71,7 +71,7 @@ if __name__ == '__main__':
             x = draw_box(img, bbox)
 
             cv2.putText(img, F'Tracking {x}',
-                        (100, 70), font, 0.5, (0, 0, 255), 2)
+                        (200, 70), font, 0.5, (0, 0, 255), 2)
 
             width_high = img.shape[2] / 2
             width_low = -1 * width_high
