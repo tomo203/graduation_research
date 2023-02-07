@@ -1,5 +1,5 @@
 import a
 
-num = a.range_chahger(5, 0, 10, -5, 5)
+num = a.range_chahger(300, -300, 300, -100, 100)
 
 print(num)
