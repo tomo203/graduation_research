@@ -66,6 +66,10 @@ if __name__ == '__main__':
     tracker.init(img, bbox)
 
     init_distance = distance_sencor.get_distance()
+    while init_distance == 0:
+        init_distance = distance_sencor.get_distance()
+        if init_distance < 2 and init_distance > 400:
+            distance = 0
 
     font = cv2.FONT_HERSHEY_SIMPLEX
 
@@ -90,12 +94,18 @@ if __name__ == '__main__':
             if distance < 2 and distance > 400:
                 distance = 0
 
-            if distance > init_distance + 5:
-                driverL.drive(50)
-                driverR.drive(50)
-            elif distance < init_distance - 5:
-                driverL.drive(-50)
-                driverR.drive(-50)
+            print(init_distance, end=", ")
+            print(distance)
+
+            if distance > init_distance + 10:
+                driverL.drive(-10)
+                driverR.drive(-10)
+            elif distance < init_distance - 10:
+                driverL.drive(10)
+                driverR.drive(10)
+            else:
+                driverL.stop()
+                driverR.stop()
 
             # if turn_speed > 5:
             #     driverL.drive(turn_speed)
@@ -107,14 +117,32 @@ if __name__ == '__main__':
             #     driverL.stop()
             #     driverR.stop()
 
-            time.sleep(0.01)
+            # time.sleep(0.01)
 
-            driverL.stop()
-            driverR.stop()
+            # driverL.stop()
+            # driverR.stop()
 
         else:
             cv2.putText(img, 'Tracking Lost', (15, 70),
                         font, 0.5, (0, 0, 255), 2)
+
+            distance = distance_sencor.get_distance()
+
+            if distance < 2 and distance > 400:
+                distance = 0
+
+            print(init_distance, end=", ")
+            print(distance)
+
+            if distance > init_distance + 5:
+                driverL.drive(-50)
+                driverR.drive(-50)
+            elif distance < init_distance - 5:
+                driverL.drive(50)
+                driverR.drive(50)
+            else:
+                driverL.stop()
+                driverR.stop()
 
         cv2.imshow("Tracking", img)
 

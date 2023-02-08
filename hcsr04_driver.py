@@ -34,5 +34,5 @@ class hcsr04_driver:
     def get_distance(self):
         self.pi.gpio_trigger(self.TRIG, 10, 1)  # Trig (10μs pulse)
         # wait for echo signal for 100msec (enough..., I believe...)
-        time.sleep(0.1)
+        # time.sleep(0.1)
         return self.distance

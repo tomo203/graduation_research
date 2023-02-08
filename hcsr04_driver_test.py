@@ -12,7 +12,7 @@ while True:
         distance = driver.get_distance()
         print(distance)
 
-        time.sleep(1)
+        time.sleep(0.02)
     except KeyboardInterrupt:
         sys.exit()
 
