@@ -33,6 +33,8 @@ def draw_box(img, bbox):
 if __name__ == '__main__':
     pi_address = "192.168.137.125"
 
+    init_distance = 0
+
     pi = pigpio.pi(pi_address)
 
     driverL = motordriver.Tb6643kq_driver(pi, 5, 6)
@@ -62,6 +64,8 @@ if __name__ == '__main__':
     bbox = cv2.selectROI("Tracking", img, False)
     tracker.init(img, bbox)
 
+    init_distance = distance_sencor.get_distance()
+
     font = cv2.FONT_HERSHEY_SIMPLEX
 
     while True:
@@ -79,6 +83,18 @@ if __name__ == '__main__':
 
             cv2.putText(img, F'{turn_speed}',
                         (200, 70), font, 0.5, (0, 0, 255), 2)
+
+            distance = distance_sencor.get_distance()
+
+            if distance < 2 and distance > 400:
+                distance = 0
+
+            if distance > init_distance + 5:
+                driverL.drive(50)
+                driverR.drive(50)
+            elif distance < init_distance - 5:
+                driverL.drive(-50)
+                driverR.drive(-50)
 
             # if turn_speed > 5:
             #     driverL.drive(turn_speed)
