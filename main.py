@@ -50,6 +50,7 @@ if __name__ == '__main__':
 
     # Create tracker
     tracker = cv2.TrackerKCF_create()
+    # tracker = cv2.TrackerCSRT_create()
 
     while True:
         ret, img = cap.read()
