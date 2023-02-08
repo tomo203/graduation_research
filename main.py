@@ -80,15 +80,15 @@ if __name__ == '__main__':
             cv2.putText(img, F'{turn_speed}',
                         (200, 70), font, 0.5, (0, 0, 255), 2)
 
-            if turn_speed > 5:
-                driverL.drive(turn_speed)
-                driverR.drive(-turn_speed)
-            elif turn_speed < -5:
-                driverL.drive(turn_speed)
-                driverR.drive(-turn_speed)
-            else:
-                driverL.stop()
-                driverR.stop()
+            # if turn_speed > 5:
+            #     driverL.drive(turn_speed)
+            #     driverR.drive(-turn_speed)
+            # elif turn_speed < -5:
+            #     driverL.drive(turn_speed)
+            #     driverR.drive(-turn_speed)
+            # else:
+            #     driverL.stop()
+            #     driverR.stop()
 
             time.sleep(0.01)
 

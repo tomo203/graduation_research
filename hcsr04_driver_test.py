@@ -10,8 +10,7 @@ driver = driver.hcsr04_driver(pi, 23, 24)
 while True:
     try:
         distance = driver.get_distance()
-        if distance > 2 and distance < 400:
-            print(distance)
+        print(distance)
 
         time.sleep(1)
     except KeyboardInterrupt:
