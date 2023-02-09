@@ -37,8 +37,8 @@ if __name__ == '__main__':
 
     pi = pigpio.pi(pi_address)
 
-    driverL = motordriver.Tb6643kq_driver(pi, 5, 6)
-    driverR = motordriver.Tb6643kq_driver(pi, 22, 27)
+    driverL = motordriver.Tb6643kq_driver(pi, 22, 27)
+    driverR = motordriver.Tb6643kq_driver(pi, 5, 6)
     distance_sencor = sensor.hcsr04_driver(pi, 23, 24)
 
     driverL.stop()
@@ -76,6 +76,8 @@ if __name__ == '__main__':
     while True:
         timer = cv2.getTickCount()
         ret, img = cap.read()
+        speedl = 0
+        speedr = 0
 
         success, bbox = tracker.update(img)
         if success:
@@ -98,24 +100,27 @@ if __name__ == '__main__':
             print(distance)
 
             if distance > init_distance + 10:
-                driverL.drive(-10)
-                driverR.drive(-10)
+                speedl = speedl + 50
+                speedr = speedr + 50
             elif distance < init_distance - 10:
-                driverL.drive(10)
-                driverR.drive(10)
-            else:
-                driverL.stop()
-                driverR.stop()
+                speedl = speedl - 50
+                speedr = speedr - 50
+            # else:
+            #     speedl = speedl + 30
+            #     speedr = speedr + 30
 
-            # if turn_speed > 5:
-            #     driverL.drive(turn_speed)
-            #     driverR.drive(-turn_speed)
-            # elif turn_speed < -5:
-            #     driverL.drive(turn_speed)
-            #     driverR.drive(-turn_speed)
+            # if turn_speed > 20:
+            #     speedl = speedl + 22
+            #     speedr = speedr - 22
+            # elif turn_speed < -20:
+            #     speedl = speedl - 22
+            #     speedr = speedr + 22
             # else:
             #     driverL.stop()
             #     driverR.stop()
+
+            driverL.drive(speedl)
+            driverR.drive(speedr)
 
             # time.sleep(0.01)
 
@@ -133,16 +138,8 @@ if __name__ == '__main__':
 
             print(init_distance, end=", ")
             print(distance)
-
-            if distance > init_distance + 5:
-                driverL.drive(-50)
-                driverR.drive(-50)
-            elif distance < init_distance - 5:
-                driverL.drive(50)
-                driverR.drive(50)
-            else:
-                driverL.stop()
-                driverR.stop()
+            driverL.stop()
+            driverR.stop()
 
         cv2.imshow("Tracking", img)
 
